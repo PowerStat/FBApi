@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified" attributeFormDefault="unqualified" vc:minVersion="1.1">
+  <xs:element name="devicelist">
+    <xs:annotation>
+      <xs:documentation>Result of getdevicelistinfos command.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence maxOccurs="unbounded">
+        <xs:element name="device" type="deviceType" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="group" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="deviceType">
+                <xs:sequence>
+                  <xs:element name="groupinfo">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="masterdeviceid">
+                          <xs:simpleType>
+                            <xs:restriction base="xs:long">
+                              <xs:minInclusive value="0"/>
+                            </xs:restriction>
+                          </xs:simpleType>
+                        </xs:element>
+                        <xs:element name="members" type="xs:string"/>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:extension>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="version" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="deviceType">
+    <xs:sequence>
+      <xs:element name="present">
+        <xs:simpleType>
+          <xs:restriction base="xs:boolean">
+            <xs:pattern value="0|1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="txbusy" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:boolean">
+            <xs:pattern value="0|1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="batterylow" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:boolean">
+            <xs:pattern value="0|1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="battery" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:integer">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="100"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="switch" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="state">
+              <xs:simpleType>
+                <xs:restriction base="xs:boolean">
+                  <xs:pattern value="0|1"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="mode">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:enumeration value="auto"/>
+                  <xs:enumeration value="manuell"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="lock">
+              <xs:simpleType>
+                <xs:restriction base="xs:boolean">
+                  <xs:pattern value="0|1"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="devicelock" minOccurs="0">
+              <xs:simpleType>
+                <xs:restriction base="xs:boolean">
+                  <xs:pattern value="0|1"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="powermeter" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="power" type="xs:integer"/>
+            <xs:element name="energy" type="xs:integer"/>
+            <xs:element name="voltage" type="xs:integer"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="temperature" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="celsius" type="xs:integer"/>
+            <xs:element name="offset" type="xs:integer"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="alert" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="state">
+              <xs:simpleType>
+                <xs:restriction base="xs:boolean">
+                  <xs:pattern value="0|1"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="lastalertchgtimestamp" minOccurs="0">
+              <xs:simpleType>
+                <xs:restriction base="xs:long">
+                  <xs:minInclusive value="1577836800"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="button" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="lastpressedtimestamp">
+              <xs:simpleType>
+                <xs:restriction base="xs:long">
+                  <xs:minInclusive value="1577836800"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="name" type="xs:string" minOccurs="0"/>
+          </xs:sequence>
+          <xs:attribute name="identifier" type="xs:string" use="optional"/>
+          <xs:attribute name="id" use="optional">
+            <xs:simpleType>
+              <xs:restriction base="xs:integer">
+                <xs:minInclusive value="0"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="etsiunitinfo" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="etsideviceid" type="xs:string"/>
+            <xs:element name="unittype">
+              <xs:simpleType>
+                <xs:restriction base="xs:integer">
+                  <xs:minInclusive value="256"/>
+                  <xs:maxInclusive value="640"/>
+                  <xs:enumeration value="256"/>
+                  <xs:enumeration value="257"/>
+                  <xs:enumeration value="262"/>
+                  <xs:enumeration value="263"/>
+                  <xs:enumeration value="264"/>
+                  <xs:enumeration value="265"/>
+                  <xs:enumeration value="266"/>
+                  <xs:enumeration value="273"/>
+                  <xs:enumeration value="277"/>
+                  <xs:enumeration value="278"/>
+                  <xs:enumeration value="281"/>
+                  <xs:enumeration value="512"/>
+                  <xs:enumeration value="513"/>
+                  <xs:enumeration value="514"/>
+                  <xs:enumeration value="515"/>
+                  <xs:enumeration value="518"/>
+                  <xs:enumeration value="519"/>
+                  <xs:enumeration value="520"/>
+                  <xs:enumeration value="640"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="interfaces">
+              <xs:simpleType>
+                <xs:restriction base="xs:integer">
+                  <xs:minInclusive value="256"/>
+                  <xs:maxInclusive value="1024"/>
+                  <xs:enumeration value="256"/>
+                  <xs:enumeration value="277"/>
+                  <xs:enumeration value="512"/>
+                  <xs:enumeration value="513"/>
+                  <xs:enumeration value="514"/>
+                  <xs:enumeration value="772"/>
+                  <xs:enumeration value="1024"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="simpleonoff" minOccurs="0">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="state">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:boolean">
+                        <xs:pattern value="0|1"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="levelcontrol" minOccurs="0">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="level">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:integer">
+                        <xs:minInclusive value="0"/>
+                        <xs:maxInclusive value="255"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element name="levelpercentage">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:integer">
+                        <xs:minInclusive value="0"/>
+                        <xs:maxInclusive value="100"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="colorcontrol" minOccurs="0">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:choice>
+                    <xs:element name="hue">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:integer">
+                          <xs:minInclusive value="0"/>
+                          <xs:maxInclusive value="359"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="saturation">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:integer">
+                          <xs:minInclusive value="0"/>
+                          <xs:maxInclusive value="255"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:choice>
+                  <xs:element name="temperature">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:integer">
+                        <xs:minInclusive value="2700"/>
+                        <xs:maxInclusive value="6500"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                </xs:sequence>
+                <xs:attribute name="supported_modes" use="required">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:integer">
+                      <xs:minInclusive value="0"/>
+                      <xs:maxInclusive value="5"/>
+                      <xs:enumeration value="0"/>
+                      <xs:enumeration value="1"/>
+                      <xs:enumeration value="4"/>
+                      <xs:enumeration value="5"/>
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:attribute>
+                <xs:attribute name="current_mode" use="required">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:enumeration value=""/>
+                      <xs:enumeration value="1"/>
+                      <xs:enumeration value="4"/>
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:attribute>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="hkr" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="tlist">
+              <xs:simpleType>
+                <xs:restriction base="xs:integer">
+                  <xs:minInclusive value="0"/>
+                  <xs:maxInclusive value="254"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="tsoll">
+              <xs:simpleType>
+                <xs:restriction base="xs:integer">
+                  <xs:minInclusive value="16"/>
+                  <xs:maxInclusive value="254"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="komfort">
+              <xs:simpleType>
+                <xs:restriction base="xs:integer">
+                  <xs:minInclusive value="16"/>
+                  <xs:maxInclusive value="254"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="absenk">
+              <xs:simpleType>
+                <xs:restriction base="xs:integer">
+                  <xs:minInclusive value="16"/>
+                  <xs:maxInclusive value="254"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="batterylow" minOccurs="0">
+              <xs:simpleType>
+                <xs:restriction base="xs:boolean">
+                  <xs:pattern value="0|1"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="battery">
+              <xs:simpleType>
+                <xs:restriction base="xs:integer">
+                  <xs:minInclusive value="0"/>
+                  <xs:maxInclusive value="100"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="windowopenactiv" minOccurs="0">
+              <xs:simpleType>
+                <xs:restriction base="xs:boolean">
+                  <xs:pattern value="0|1"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="windowopenactiveendtime" minOccurs="0">
+              <xs:simpleType>
+                <xs:restriction base="xs:long">
+                  <xs:minInclusive value="1577836800"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="boostactive" minOccurs="0">
+              <xs:simpleType>
+                <xs:restriction base="xs:boolean">
+                  <xs:pattern value="0|1"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="boostactiveendtime" minOccurs="0">
+              <xs:simpleType>
+                <xs:restriction base="xs:long">
+                  <xs:minInclusive value="1577836800"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="holidayactive" minOccurs="0">
+              <xs:simpleType>
+                <xs:restriction base="xs:boolean">
+                  <xs:pattern value="0|1"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="summeractive" minOccurs="0">
+              <xs:simpleType>
+                <xs:restriction base="xs:boolean">
+                  <xs:pattern value="0|1"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="lock">
+              <xs:simpleType>
+                <xs:restriction base="xs:boolean">
+                  <xs:pattern value="0|1"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="devicelock" minOccurs="0">
+              <xs:simpleType>
+                <xs:restriction base="xs:boolean">
+                  <xs:pattern value="0|1"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="nextchange" minOccurs="0">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="endperiod">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:long">
+                        <xs:minInclusive value="1577836800"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                  <xs:element name="tchange">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:integer">
+                        <xs:maxInclusive value="255"/>
+                        <xs:minInclusive value="16"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="errorcode" minOccurs="0">
+              <xs:simpleType>
+                <xs:restriction base="xs:integer">
+                  <xs:minInclusive value="0"/>
+                  <xs:maxInclusive value="6"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="identifier" type="xs:string" use="required"/>
+    <xs:attribute name="id" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:integer">
+          <xs:minInclusive value="0"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="fwversion" type="xs:string" use="required"/>
+    <xs:attribute name="manufacturer" type="xs:string" use="optional"/>
+    <xs:attribute name="productname" type="xs:string" use="optional"/>
+    <xs:attribute name="functionbitmask" use="optional">
+      <xs:simpleType>
+        <xs:restriction base="xs:integer">
+          <xs:minInclusive value="0"/>
+          <xs:maxInclusive value="262143"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+</xs:schema>

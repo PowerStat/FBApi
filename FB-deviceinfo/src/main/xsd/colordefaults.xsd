@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified" attributeFormDefault="unqualified" vc:minVersion="1.1">
+  <xs:element name="colordefaults">
+    <xs:annotation>
+      <xs:documentation>Result of  getcolordefaults command.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="hsdefaults">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="hs" minOccurs="12" maxOccurs="12">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="name">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="enum" use="required">
+                              <xs:simpleType>
+                                <xs:restriction base="xs:integer">
+                                  <xs:minInclusive value="0"/>
+                                </xs:restriction>
+                              </xs:simpleType>
+                            </xs:attribute>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="color" minOccurs="3" maxOccurs="3">
+                      <xs:complexType>
+                        <xs:attribute name="sat_index" use="required">
+                          <xs:simpleType>
+                            <xs:restriction base="xs:integer">
+                              <xs:minInclusive value="0"/>
+                            </xs:restriction>
+                          </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="hue" use="required">
+                          <xs:simpleType>
+                            <xs:restriction base="xs:integer">
+                              <xs:minInclusive value="0"/>
+                              <xs:maxInclusive value="359"/>
+                            </xs:restriction>
+                          </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="sat" use="required">
+                          <xs:simpleType>
+                            <xs:restriction base="xs:integer">
+                              <xs:minInclusive value="0"/>
+                              <xs:maxInclusive value="255"/>
+                            </xs:restriction>
+                          </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="val" use="required">
+                          <xs:simpleType>
+                            <xs:restriction base="xs:integer">
+                              <xs:minInclusive value="0"/>
+                              <xs:maxInclusive value="255"/>
+                            </xs:restriction>
+                          </xs:simpleType>
+                        </xs:attribute>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="hue_index" use="required">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:integer">
+                        <xs:minInclusive value="0"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="temperaturedefaults">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="temp" minOccurs="10" maxOccurs="10">
+                <xs:complexType>
+                  <xs:attribute name="value" use="required">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:integer">
+                        <xs:minInclusive value="2700"/>
+                        <xs:maxInclusive value="6500"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

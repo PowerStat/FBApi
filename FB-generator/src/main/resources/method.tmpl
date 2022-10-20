@@ -1,0 +1,21 @@
+
+
+  /**
+   * {METHODDESC}.
+   *<!-- BEGIN JPARAMDESCS -->
+   * @param {JPARAMNAME} {JPARAMDESC}<!-- END JPARAMDESCS --><!-- BEGIN RETURNDESCS -->
+   * @return {RETURNDESC}<!-- END RETURNDESCS -->
+   * @throws UnsupportedEncodingException Unsupported encoding exception
+   * @throws ClientProtocolException Client protocol exception
+   * @throws ParseException Parse exception
+   * @throws IOException IO exception
+   * @throws SAXException SAX exception
+   * @throws java.text.ParseException Parse exception
+   */
+  public {METHODTYPE} {JMETHODNAME}(<!-- BEGIN JPARAMS -->final {PARAMTYPE} {JPARAMNAME}{COMMA}<!-- END JPARAMS -->) throws ParseException, IOException, SAXException, java.text.ParseException
+   {
+    final Map<String, String> parameters = new HashMap<>();<!-- BEGIN PARAMS -->
+    parameters.put("{PARAMNAME}", {JPARAMNAMEVAL}); //\\\$NON-NLS-1\\\$<!-- END PARAMS -->
+    <!-- BEGIN RESULT -->final Document doc = <!-- END RESULT -->this.tr64.doSOAPRequest(CONTROL_URL, SERVICE_TYPE, "{METHODNAME}", parameters); //\$NON-NLS-1\$<!-- BEGIN RETURN -->
+    return {RETCONVB}<!-- BEGIN RETFIELDS -->{RETPARCONVB}doc.getElementsByTagName("{RETURNPARAMNAME}").item(0).getTextContent(){RETPARCONVE}{RTCOMMA}<!-- END RETFIELDS -->{RETCONVE};<!-- BEGIN RETNLS --> //\\\\\\\$NON-NLS-{RETNLSNR}\\\\\\\$<!-- END RETNLS --><!-- END RETURN -->
+   }

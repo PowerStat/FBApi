@@ -1,0 +1,79 @@
+/*
+ * Copyright (C) 2015-2020 Dipl.-Inform. Kai Hofmann. All rights reserved!
+ */
+package de.powerstat.fb.generated.tr64;
+
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+<!-- BEGIN IMPORTS_DATE -->
+import java.text.DateFormat;
+import java.util.Date;
+<!-- END IMPORTS_DATE -->
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.http.ParseException;
+import org.apache.http.client.ClientProtocolException;
+// import org.apache.logging.log4j.LogManager;
+// import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import de.powerstat.fb.mini.TR64SessionMini;
+
+
+/**
+ * {CLASSDESC}.
+ */
+public class {CLASSNAME}
+ {
+  /**
+   * Logger.
+   */
+  // private static final Logger LOGGER = LogManager.getLogger({CLASSNAME}.class);
+
+  /**
+   * Service type.
+   */
+  private static final String SERVICE_TYPE  = "{SERVICETYPE}"; //$NON-NLS-1$
+
+  /**
+   * Service id.
+   */
+  // private static final String SERVICE_ID = "{SERVICEID}"; //$NON-NLS-1$
+
+  /**
+   * Control URL.
+   */
+  private static final String CONTROL_URL = "{CONTROLURL}"; //$NON-NLS-1$
+
+  /**
+   * Event sub URL.
+   */
+  // private static final String EVENT_SUB_URL = "{EVENTSUBURL}"; //$NON-NLS-1$
+
+  /**
+   * SCPD URL.
+   */
+  // private static final String SCPDURL = "{SCPDURL}"; //$NON-NLS-1$
+
+  /**
+   * TR64 session.
+   */
+  private final TR64SessionMini tr64;
+
+
+  /**
+   * Constructor.
+   *
+   * @param session TR64 session
+   */
+  public {CLASSNAME}(final TR64SessionMini session)
+   {
+    this.tr64 = session;
+   }
+<!-- BEGIN METHODS -->
+{METHOD}
+<!-- END METHODS -->
+ }

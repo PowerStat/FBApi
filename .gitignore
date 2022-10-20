@@ -1,0 +1,5 @@
+FB-api/target/
+FB-deviceinfo/target/
+FB-generator/target/
+FB-gentr64/target/
+FB-api/dependency-reduced-pom.xml
