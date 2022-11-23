@@ -437,7 +437,7 @@ public final class TR64ServiceClasses
        }
       if (!templ.setBlock(classname.toUpperCase(Locale.getDefault()), "IMPORTS_DATE", "IMPORTS_DATE_BLK") && LOGGER.isWarnEnabled()) //$NON-NLS-1$ //$NON-NLS-2$
        {
-        LOGGER.warn("IMPORTS_DATE not found in " + classname.toUpperCase(Locale.getDefault())); //$NON-NLS-1$
+        LOGGER.warn("IMPORTS_DATE not found in {}", classname.toUpperCase(Locale.getDefault())); //$NON-NLS-1$
        }
 
       final NodeList actionNL = scpd.getElementsByTagName("action"); //$NON-NLS-1$
@@ -456,7 +456,7 @@ public final class TR64ServiceClasses
       /* final boolean success = */ dir.mkdirs();
       if (LOGGER.isDebugEnabled())
        {
-        LOGGER.debug("Write3: " + dir.getAbsolutePath() + File.separator + classname + ".java"); //$NON-NLS-1$ //$NON-NLS-2$
+        LOGGER.debug("Write3: {}{}{}.java", dir.getAbsolutePath(), File.separator, classname); //$NON-NLS-1$ //$NON-NLS-2$
        }
       try (PrintWriter out = new PrintWriter(dir.getAbsolutePath() + File.separator + TR64ServiceTemplates.convertUnderline2CamelCase(classname, true) + ".java", StandardCharsets.UTF_8)) //$NON-NLS-1$
        {

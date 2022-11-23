@@ -7,6 +7,7 @@ package de.powerstat.fb;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Pattern;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -43,6 +44,11 @@ public final class TR64Session extends TR64SessionMini
    * Logger.
    */
   // private static final Logger LOGGER = LogManager.getLogger(TR64Session.class);
+
+  /**
+   * Replacement regexp.
+   */
+  private static final Pattern REPLACE_REGEXP = Pattern.compile("TR64SessionMini"); //$NON-NLS-1$
 
 
   /**
@@ -101,7 +107,7 @@ public final class TR64Session extends TR64SessionMini
   public static TR64Session newInstance(final Hostname hostname, final Port port, final Username username, final Password password) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException, ParserConfigurationException
    {
     final CredentialsProvider credsProvider = new BasicCredentialsProvider();
-    credsProvider.setCredentials(new AuthScope(hostname.getHostname(), port.getPort()), new UsernamePasswordCredentials(username.getUsername(), password.getPassword()));
+    credsProvider.setCredentials(new AuthScope(hostname.stringValue(), port.intValue()), new UsernamePasswordCredentials(username.stringValue(), password.stringValue()));
     final CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(new SSLConnectionSocketFactory(new SSLContextBuilder().loadTrustMaterial(null, new TrustSelfSignedStrategy()).build())).setDefaultCredentialsProvider(credsProvider).build();
 
     final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -164,7 +170,7 @@ public final class TR64Session extends TR64SessionMini
   @Override
   public String toString()
    {
-    return super.toString().replaceFirst("TR64SessionMini", "TR64Session"); //$NON-NLS-1$ //$NON-NLS-2$
+    return REPLACE_REGEXP.matcher(super.toString()).replaceFirst("TR64Session"); //$NON-NLS-1$
    }
 
  }

@@ -191,7 +191,7 @@ public class TR64DataClasses
       /* final boolean success = */ dir.mkdirs();
       if (LOGGER.isDebugEnabled())
        {
-        LOGGER.debug("Write2: " + dir.getAbsolutePath() + File.separator + clName + ".java"); //$NON-NLS-1$ //$NON-NLS-2$
+        LOGGER.debug("Write2: {}{}{}.java", dir.getAbsolutePath(), File.separator, clName); //$NON-NLS-1$ //$NON-NLS-2$
        }
       try (PrintWriter out = new PrintWriter(dir.getAbsolutePath() + File.separator + TR64ServiceTemplates.convertUnderline2CamelCase(clName, true) + ".java", StandardCharsets.UTF_8)) //$NON-NLS-1$
        {

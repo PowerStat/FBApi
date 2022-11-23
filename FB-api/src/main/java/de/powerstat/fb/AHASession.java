@@ -7,6 +7,7 @@ package de.powerstat.fb;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Pattern;
 
 import javax.xml.XMLConstants;
 import jakarta.xml.bind.JAXBContext;
@@ -43,6 +44,12 @@ public final class AHASession extends AHASessionMini
    * Logger.
    */
   // private static final Logger LOGGER = LogManager.getLogger(AHASession.class);
+
+  /**
+   * Replacement regexp.
+   */
+  private static final Pattern REPLACE_REGEXP = Pattern.compile("AHASessionMini"); //$NON-NLS-1$
+
 
 
   /**
@@ -172,7 +179,7 @@ public final class AHASession extends AHASessionMini
   @Override
   public String toString()
    {
-    return super.toString().replaceFirst("AHASessionMini", "AHASession"); //$NON-NLS-1$ //$NON-NLS-2$
+    return REPLACE_REGEXP.matcher(super.toString()).replaceFirst("AHASession"); //$NON-NLS-1$
    }
 
  }

@@ -12,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.logging.log4j.LogManager;
@@ -34,6 +35,11 @@ public final class TR64ServiceTemplates
    * Logger.
    */
   private static final Logger LOGGER = LogManager.getLogger(TR64ServiceTemplates.class);
+
+  /**
+   * Method name regexp.
+   */
+  private static final Pattern METHODNAME_REGEXP = Pattern.compile("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])"); //$NON-NLS-1$
 
   /**
    * TR64 session.
@@ -99,7 +105,7 @@ public final class TR64ServiceTemplates
   public static String toSentence(final String methodName)
    {
     final StringBuilder methodDesc = new StringBuilder();
-    for (final String word : methodName.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])")) //$NON-NLS-1$
+    for (final String word : METHODNAME_REGEXP.split(methodName)) //$NON-NLS-1$
      {
       methodDesc.append((methodDesc.length() > 0) ? word.toLowerCase(Locale.getDefault()) : word);
       methodDesc.append(' ');
@@ -151,7 +157,7 @@ public final class TR64ServiceTemplates
     /* final boolean success = */ dir.mkdirs();
     if (LOGGER.isDebugEnabled())
      {
-      LOGGER.debug("Write1: " + dir.getAbsolutePath() + File.separator + classname + ".tmpl"); //$NON-NLS-1$ //$NON-NLS-2$
+      LOGGER.debug("Write1: {}{}{}.tmpl", dir.getAbsolutePath(), File.separator, classname); //$NON-NLS-1$ //$NON-NLS-2$
      }
     try (PrintWriter out = new PrintWriter(dir.getAbsolutePath() + File.separator + convertUnderline2CamelCase(classname, true) + ".tmpl", StandardCharsets.UTF_8)) //$NON-NLS-1$
      {
