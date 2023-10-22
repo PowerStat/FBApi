@@ -4,5 +4,5 @@ FB-generator/target/
 FB-gentr64/target/
 FB-api/dependency-reduced-pom.xml
 target/
-B-generator/dependency-reduced-pom.xml
 cov-int/
+FB-generator/dependency-reduced-pom.xml

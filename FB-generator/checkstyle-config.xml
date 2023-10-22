@@ -235,7 +235,7 @@
       <property name="max" value="3"/>
     </module>
     <module name="NestedIfDepth">
-      <property name="max" value="4"/>
+      <property name="max" value="5"/>
     </module>
     <module name="NestedTryDepth">
       <property name="max" value="2"/>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Dipl.-Inform. Kai Hofmann. All rights reserved!
+ * Copyright (C) 2020-2023 Dipl.-Inform. Kai Hofmann. All rights reserved!
  */
 package de.powerstat.fb.generator.impl;
 
@@ -26,8 +26,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import de.powerstat.fb.mini.TR64SessionMini;
+import de.powerstat.phplib.templateengine.HandleUndefined;
 import de.powerstat.phplib.templateengine.TemplateEngine;
-import de.powerstat.phplib.templateengine.TemplateEngine.HandleUndefined;
 
 
 /**
@@ -43,30 +43,135 @@ public final class TR64ServiceClasses
   /**
    *Type map.
    */
-  private static final transient Map<String, String> TYPE_MAP = new ConcurrentHashMap<>();
+  private static final Map<String, String> TYPE_MAP = new ConcurrentHashMap<>();
+
+  /**
+   * Type long constant.
+   */
+  private static final String TYPE_LONG = "long";
+
+  /**
+   * Type boolean constant.
+   */
+  private static final String BOOLEAN = "boolean";
+
+  /**
+   * Var return constant.
+   */
+  private static final String VAR_RETURN = "RETURN";
+
+  /**
+   * Return fields block constant.
+   */
+  private static final String RETFIELDS_BLK = "RETFIELDS_BLK";
+
+  /**
+   * Return nls constant.
+   */
+  private static final String RETNLS = "RETNLS";
+
+  /**
+   * Return nls block constant.
+   */
+  private static final String RETNLS_BLK = "RETNLS_BLK";
+
+  /**
+   * Return parameter conv b constant.
+   */
+  private static final String RETPARCONVB = "RETPARCONVB";
+
+  /**
+   * Return parameter conv e constant.
+   */
+  private static final String RETPARCONVE = "RETPARCONVE";
+
+  /**
+   * Jparam descs constant.
+   */
+  private static final String JPARAMDESCS = "JPARAMDESCS";
+
+  /**
+   * Jparams constant.
+   */
+  private static final String JPARAMS = "JPARAMS";
+
+  /**
+   * Params constant.
+   */
+  private static final String PARAMS = "PARAMS";
+
+  /**
+   * Jparam descs block constant.
+   */
+  private static final String JPARAMDESCS_BLK = "JPARAMDESCS_BLK";
+
+  /**
+   * Jparams block constant.
+   */
+  private static final String JPARAMS_BLK = "JPARAMS_BLK";
+
+  /**
+   * Params block constant.
+   */
+  private static final String PARAMS_BLK = "PARAMS_BLK";
+
+  /**
+   * Methods constant.
+   */
+  private static final String METHODS = "METHODS";
+
+  /**
+   * Result constant.
+   */
+  private static final String RESULT = "RESULT";
+
+  /**
+   * Return descs constant.
+   */
+  private static final String RETURNDESCS = "RETURNDESCS";
+
+  /**
+   * Return fields constant.
+   */
+  private static final String RETFIELDS = "RETFIELDS";
+
+  /**
+   * Return nls nr constant.
+   */
+  private static final String RETNLSNR = "RETNLSNR";
+
+  /**
+   * Method constant.
+   */
+  private static final String METHOD = "METHOD";
+
+  /**
+   * Imports date constant.
+   */
+  private static final String IMPORTS_DATE = "IMPORTS_DATE";
 
   /**
    * TR64 session.
    */
-  private final transient TR64SessionMini session;
+  private final TR64SessionMini session;
 
   /**
    * Output path.
    */
-  private final transient String outputPath;
+  private final String outputPath;
 
 
-  /**
+  /*
    * Static initialization.
    */
   static
    {
     TYPE_MAP.put("string", "String"); //$NON-NLS-1$ //$NON-NLS-2$
-    TYPE_MAP.put("uuid", "long"); //$NON-NLS-1$ //$NON-NLS-2$
+    TYPE_MAP.put("uuid", TYPE_LONG); //$NON-NLS-1$
     TYPE_MAP.put("ui2", "int"); //$NON-NLS-1$ //$NON-NLS-2$
-    TYPE_MAP.put("ui4", "long"); //$NON-NLS-1$ //$NON-NLS-2$
-    TYPE_MAP.put("boolean", "boolean"); //$NON-NLS-1$ //$NON-NLS-2$
-    TYPE_MAP.put("i4", "long"); //$NON-NLS-1$ //$NON-NLS-2$
+    TYPE_MAP.put("ui4", TYPE_LONG); //$NON-NLS-1$
+    TYPE_MAP.put(BOOLEAN, BOOLEAN);
+    TYPE_MAP.put("i4", TYPE_LONG); //$NON-NLS-1$
     TYPE_MAP.put("dateTime", "Date"); //$NON-NLS-1$ //$NON-NLS-2$
     TYPE_MAP.put("ui1", "short"); //$NON-NLS-1$ //$NON-NLS-2$
    }
@@ -110,9 +215,9 @@ public final class TR64ServiceClasses
     for (int i = 0; i < variablesNL.getLength(); ++i) // Variable types
      {
       final NodeList variablesChildsNL = variablesNL.item(i).getChildNodes();
-      String name = ""; //$NON-NLS-1$
-      String datatype = ""; //$NON-NLS-1$
-      String defaultvalue = ""; //$NON-NLS-1$
+      var name = ""; //$NON-NLS-1$
+      var datatype = ""; //$NON-NLS-1$
+      var defaultvalue = ""; //$NON-NLS-1$
       for (int j = 0; j < variablesChildsNL.getLength(); ++j) // childs NAME, DATATYPE, DEFAULTVALUE
        {
         final Node variablesChild = variablesChildsNL.item(j);
@@ -135,7 +240,7 @@ public final class TR64ServiceClasses
            }
          }
        }
-      variableTypes.put(name, datatype);
+      variableTypes.put(name, datatype); // TODO defaultValue
      }
    }
 
@@ -151,23 +256,23 @@ public final class TR64ServiceClasses
    * @param argsOut Arguments out
    * @throws IOException IO exception
    */
-  private void generateReturnValues(final Map<String, String> variableTypes, final TemplateEngine templ, final List<String> arguments, final List<String> argDirections, final List<String> argRelated, final int argsOut) throws IOException
+  private static void generateReturnValues(final Map<String, String> variableTypes, final TemplateEngine templ, final List<String> arguments, final List<String> argDirections, final List<String> argRelated, final int argsOut) throws IOException
    {
     if ("void".equals(templ.getVar("METHODTYPE")) || (argsOut == 0)) //$NON-NLS-1$ //$NON-NLS-2$
      {
       templ.setVar("METHODTYPE", "void"); //$NON-NLS-1$ //$NON-NLS-2$
-      templ.setVar("RESULT"); //$NON-NLS-1$
-      templ.setVar("RETURN"); //$NON-NLS-1$
-      templ.setVar("RETURNDESCS"); //$NON-NLS-1$
+      templ.setVar(RESULT);
+      templ.setVar(VAR_RETURN);
+      templ.setVar(RETURNDESCS);
      }
     else
      {
       if (argsOut == 1)
        {
         templ.setVar("RTCOMMA"); //$NON-NLS-1$
-        templ.parse("RETFIELDS_BLK", "RETFIELDS"); //$NON-NLS-1$ //$NON-NLS-2$
-        templ.setVar("RETNLSNR", String.valueOf(1)); //$NON-NLS-1$
-        templ.parse("RETNLS_BLK", "RETNLS"); //$NON-NLS-1$ //$NON-NLS-2$
+        templ.parse(RETFIELDS_BLK, RETFIELDS);
+        templ.setVar(RETNLSNR, String.valueOf(1));
+        templ.parse(RETNLS_BLK, RETNLS);
        }
       else
        {
@@ -186,45 +291,45 @@ public final class TR64ServiceClasses
           final String mType = TYPE_MAP.get(variableTypes.get(argRelated.get(j)));
           if ("String".equals(mType)) //$NON-NLS-1$
            {
-            templ.setVar("RETPARCONVB", ""); //$NON-NLS-1$ //$NON-NLS-2$
-            templ.setVar("RETPARCONVE", ""); //$NON-NLS-1$ //$NON-NLS-2$
+            templ.setVar(RETPARCONVB, ""); //$NON-NLS-1$
+            templ.setVar(RETPARCONVE, ""); //$NON-NLS-1$
            }
-          else if ("long".equals(mType)) //$NON-NLS-1$
+          else if (TYPE_LONG.equals(mType))
            {
-            templ.setVar("RETPARCONVB", "Long.parseLong("); //$NON-NLS-1$ //$NON-NLS-2$
-            templ.setVar("RETPARCONVE", ")"); //$NON-NLS-1$ //$NON-NLS-2$
+            templ.setVar(RETPARCONVB, "Long.parseLong("); //$NON-NLS-1$
+            templ.setVar(RETPARCONVE, ")"); //$NON-NLS-1$
            }
           else if ("int".equals(mType)) //$NON-NLS-1$
            {
-            templ.setVar("RETPARCONVB", "Integer.parseInt("); //$NON-NLS-1$ //$NON-NLS-2$
-            templ.setVar("RETPARCONVE", ")"); //$NON-NLS-1$ //$NON-NLS-2$
+            templ.setVar(RETPARCONVB, "Integer.parseInt("); //$NON-NLS-1$
+            templ.setVar(RETPARCONVE, ")"); //$NON-NLS-1$
            }
-          else if ("boolean".equals(mType)) //$NON-NLS-1$
+          else if (BOOLEAN.equals(mType))
            {
-            templ.setVar("RETPARCONVB", "\"1\".equals("); //$NON-NLS-1$ //$NON-NLS-2$
-            templ.setVar("RETPARCONVE", ")"); //$NON-NLS-1$ //$NON-NLS-2$
-            templ.setVar("RETNLSNR", String.valueOf(k + ke)); //$NON-NLS-1$
-            templ.parse("RETNLS_BLK", "RETNLS", true); //$NON-NLS-1$ //$NON-NLS-2$
+            templ.setVar(RETPARCONVB, "\"1\".equals("); //$NON-NLS-1$
+            templ.setVar(RETPARCONVE, ")"); //$NON-NLS-1$
+            templ.setVar(RETNLSNR, String.valueOf(k + ke));
+            templ.parse(RETNLS_BLK, RETNLS, true);
             ++ke;
            }
           else if ("short".equals(mType)) //$NON-NLS-1$
            {
-            templ.setVar("RETPARCONVB", "Short.parseShort("); //$NON-NLS-1$ //$NON-NLS-2$
-            templ.setVar("RETPARCONVE", ")"); //$NON-NLS-1$ //$NON-NLS-2$
+            templ.setVar(RETPARCONVB, "Short.parseShort("); //$NON-NLS-1$
+            templ.setVar(RETPARCONVE, ")"); //$NON-NLS-1$
            }
           else if ("Date".equals(mType)) //$NON-NLS-1$
            {
-            templ.setVar("RETPARCONVB", "DateFormat.getDateInstance().parse("); //$NON-NLS-1$ //$NON-NLS-2$
-            templ.setVar("RETPARCONVE", ")"); //$NON-NLS-1$ //$NON-NLS-2$
+            templ.setVar(RETPARCONVB, "DateFormat.getDateInstance().parse("); //$NON-NLS-1$
+            templ.setVar(RETPARCONVE, ")"); //$NON-NLS-1$
            }
           else
            {
-            templ.setVar("RETPARCONVB", ""); //$NON-NLS-1$ //$NON-NLS-2$
-            templ.setVar("RETPARCONVE", ""); //$NON-NLS-1$ //$NON-NLS-2$
+            templ.setVar(RETPARCONVB, ""); //$NON-NLS-1$
+            templ.setVar(RETPARCONVE, ""); //$NON-NLS-1$
            }
-          templ.parse("RETFIELDS_BLK", "RETFIELDS", true); //$NON-NLS-1$ //$NON-NLS-2$
-          templ.setVar("RETNLSNR", String.valueOf(k + ke)); //$NON-NLS-1$
-          templ.parse("RETNLS_BLK", "RETNLS", true); //$NON-NLS-1$ //$NON-NLS-2$
+          templ.parse(RETFIELDS_BLK, RETFIELDS, true);
+          templ.setVar(RETNLSNR, String.valueOf(k + ke));
+          templ.parse(RETNLS_BLK, RETNLS, true);
          }
         // templ.parse("RETFIELDS_BLK", "RETFIELDS", false);
         // templ.parse("RETNLS_BLK", "RETNLS", false);
@@ -245,16 +350,16 @@ public final class TR64ServiceClasses
    * @param argsIn Arguments in
    * @throws IOException IO exception
    */
-  private void generateArguments(final Map<String, String> variableTypes, final TemplateEngine templ, final List<String> arguments, final List<String> argDirections, final List<String> argRelated, final int argsIn) throws IOException
+  private static void generateArguments(final Map<String, String> variableTypes, final TemplateEngine templ, final List<String> arguments, final List<String> argDirections, final List<String> argRelated, final int argsIn) throws IOException
    {
     if (argsIn == 0)
      {
-      templ.setVar("JPARAMDESCS"); //$NON-NLS-1$
-      templ.setVar("JPARAMS"); //$NON-NLS-1$
-      templ.setVar("PARAMS"); //$NON-NLS-1$
-      templ.parse("JPARAMDESCS_BLK", "JPARAMDESCS"); //$NON-NLS-1$ //$NON-NLS-2$
-      templ.parse("JPARAMS_BLK", "JPARAMS"); //$NON-NLS-1$ //$NON-NLS-2$
-      templ.parse("PARAMS_BLK", "PARAMS"); //$NON-NLS-1$ //$NON-NLS-2$
+      templ.setVar(JPARAMDESCS);
+      templ.setVar(JPARAMS);
+      templ.setVar(PARAMS);
+      templ.parse(JPARAMDESCS_BLK, JPARAMDESCS);
+      templ.parse(JPARAMS_BLK, JPARAMS);
+      templ.parse(PARAMS_BLK, PARAMS);
      }
     else
      {
@@ -276,9 +381,9 @@ public final class TR64ServiceClasses
         templ.setVar("JPARAMDESC", TR64ServiceTemplates.toSentence(argumentName)); //$NON-NLS-1$
         templ.setVar("PARAMTYPE", TYPE_MAP.get(varType)); //$NON-NLS-1$
         templ.setVar("COMMA", (k == argsIn) ? "" : ", "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        templ.parse("PARAMS_BLK", "PARAMS", true); //$NON-NLS-1$ //$NON-NLS-2$
-        templ.parse("JPARAMDESCS_BLK", "JPARAMDESCS", true); //$NON-NLS-1$ //$NON-NLS-2$
-        templ.parse("JPARAMS_BLK", "JPARAMS", true); //$NON-NLS-1$ //$NON-NLS-2$
+        templ.parse(PARAMS_BLK, PARAMS, true);
+        templ.parse(JPARAMDESCS_BLK, JPARAMDESCS, true);
+        templ.parse(JPARAMS_BLK, JPARAMS, true);
        }
      }
    }
@@ -300,7 +405,7 @@ public final class TR64ServiceClasses
    */
   private int generateServiceAction(final String scpdUrl, final String classname, final Map<String, String> variableTypes, final TemplateEngine templ, final NodeList actionNL, final int allArgsOut, final int i) throws IOException
    {
-    String methodName = ""; //$NON-NLS-1$
+    var methodName = ""; //$NON-NLS-1$
     final List<String> arguments = new ArrayList<>();
     final List<String> argDirections = new ArrayList<>();
     final List<String> argRelated = new ArrayList<>();
@@ -366,33 +471,33 @@ public final class TR64ServiceClasses
              }
            }
          }
-        final TR64DataClasses dataClass = new TR64DataClasses(this.outputPath);
+        final var dataClass = new TR64DataClasses(this.outputPath);
         allArgsOutIntern = dataClass.generateDataClass(classname, variableTypes, templ, allArgsOutIntern, methodName, arguments, argDirections, argRelated, argsOut);
        } // argumentList
      }
 
     // Generate
-    templ.setVar("METHODS", templ.getVar("METHOD")); //$NON-NLS-1$ //$NON-NLS-2$
-    templ.setBlock("METHODS", "RESULT", "RESULT_BLK"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    templ.setBlock("METHODS", "RETURN", "RETURN_BLK"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    templ.setVar("RETFIELDS_BLK"); //$NON-NLS-1$
-    templ.setVar("RETNLS_BLK"); //$NON-NLS-1$
-    templ.setBlock("RETURN", "RETFIELDS", "RETFIELDS_BLK"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    templ.setBlock("RETURN", "RETNLS", "RETNLS_BLK"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    templ.setBlock("METHODS", "RETURNDESCS", "RETURNDESCS_BLK"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    templ.setVar("JPARAMDESCS_BLK"); //$NON-NLS-1$
-    templ.setVar("JPARAMS_BLK"); //$NON-NLS-1$
-    templ.setVar("PARAMS_BLK"); //$NON-NLS-1$
-    templ.setBlock("METHODS", "JPARAMDESCS", "JPARAMDESCS_BLK"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    templ.setBlock("METHODS", "JPARAMS", "JPARAMS_BLK"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    templ.setBlock("METHODS", "PARAMS", "PARAMS_BLK"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    templ.setVar(METHODS, templ.getVar(METHOD));
+    templ.setBlock(METHODS, RESULT, "RESULT_BLK"); //$NON-NLS-1$
+    templ.setBlock(METHODS, VAR_RETURN, "RETURN_BLK"); //$NON-NLS-1$
+    templ.setVar(RETFIELDS_BLK);
+    templ.setVar(RETNLS_BLK);
+    templ.setBlock(VAR_RETURN, RETFIELDS, RETFIELDS_BLK);
+    templ.setBlock(VAR_RETURN, RETNLS, RETNLS_BLK);
+    templ.setBlock(METHODS, RETURNDESCS, "RETURNDESCS_BLK"); //$NON-NLS-1$
+    templ.setVar(JPARAMDESCS_BLK);
+    templ.setVar(JPARAMS_BLK);
+    templ.setVar(PARAMS_BLK);
+    templ.setBlock(METHODS, JPARAMDESCS, JPARAMDESCS_BLK);
+    templ.setBlock(METHODS, JPARAMS, JPARAMS_BLK);
+    templ.setBlock(METHODS, PARAMS, PARAMS_BLK);
     generateReturnValues(variableTypes, templ, arguments, argDirections, argRelated, argsOut);
     generateArguments(variableTypes, templ, arguments, argDirections, argRelated, argsIn);
 
-    templ.parse("RESULT_BLK", "RESULT"); //$NON-NLS-1$ //$NON-NLS-2$
-    templ.parse("RETURN_BLK", "RETURN"); //$NON-NLS-1$ //$NON-NLS-2$
-    templ.parse("RETURNDESCS_BLK", "RETURNDESCS"); //$NON-NLS-1$ //$NON-NLS-2$
-    templ.parse("METHODS_BLK", "METHODS", true); //$NON-NLS-1$ //$NON-NLS-2$
+    templ.parse("RESULT_BLK", RESULT); //$NON-NLS-1$
+    templ.parse("RETURN_BLK", VAR_RETURN); //$NON-NLS-1$
+    templ.parse("RETURNDESCS_BLK", RETURNDESCS); //$NON-NLS-1$
+    templ.parse("METHODS_BLK", METHODS, true); //$NON-NLS-1$
     return allArgsOutIntern;
    }
 
@@ -407,6 +512,7 @@ public final class TR64ServiceClasses
    * @throws UnsupportedEncodingException Unsupported encoding
    * @throws ClientProtocolException Client protocol exception
    */
+  @SuppressWarnings("IllegalCatch")
   public void generateServiceClass(final String scpdUrl, final String classname) throws IOException, SAXException
    {
     // LOGGER.info("scpdUrl=" + scpdUrl + " ------------------------------");
@@ -419,23 +525,23 @@ public final class TR64ServiceClasses
     final Map<String, String> variableTypes = new ConcurrentHashMap<>();
     initVariables(variablesNL, variableTypes);
 
-    final TemplateEngine templ = new TemplateEngine(HandleUndefined.KEEP);
+    final var templ = new TemplateEngine(HandleUndefined.KEEP);
     templ.setFile(classname.toUpperCase(Locale.getDefault()), new File(this.outputPath + "/generated-sources/fb/tmpl", TR64ServiceTemplates.convertUnderline2CamelCase(classname, true) + ".tmpl")); //$NON-NLS-1$ //$NON-NLS-2$
     try
      {
       templ.subst(classname.toUpperCase(Locale.getDefault()));
 
-      templ.setFile("METHOD", new File("src/main/resources", "method.tmpl")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-      templ.subst("METHOD"); //$NON-NLS-1$
+      templ.setFile(METHOD, new File("src/main/resources", "method.tmpl")); //$NON-NLS-1$ //$NON-NLS-2$
+      templ.subst(METHOD);
 
       templ.setFile("DATACLASS", new File("src/main/resources", "dataClass.tmpl")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
       templ.subst("DATACLASS"); //$NON-NLS-1$
 
-      if (!templ.setBlock(classname.toUpperCase(Locale.getDefault()), "METHODS", "METHODS_BLK") && LOGGER.isWarnEnabled()) //$NON-NLS-1$ //$NON-NLS-2$
+      if (!templ.setBlock(classname.toUpperCase(Locale.getDefault()), METHODS, "METHODS_BLK") && LOGGER.isWarnEnabled()) //$NON-NLS-1$
        {
-        LOGGER.warn("METHODS not found in " + classname.toUpperCase(Locale.getDefault())); //$NON-NLS-1$
+        LOGGER.warn("METHODS not found in {}", classname.toUpperCase(Locale.getDefault())); //$NON-NLS-1$
        }
-      if (!templ.setBlock(classname.toUpperCase(Locale.getDefault()), "IMPORTS_DATE", "IMPORTS_DATE_BLK") && LOGGER.isWarnEnabled()) //$NON-NLS-1$ //$NON-NLS-2$
+      if (!templ.setBlock(classname.toUpperCase(Locale.getDefault()), IMPORTS_DATE, "IMPORTS_DATE_BLK") && LOGGER.isWarnEnabled()) //$NON-NLS-1$
        {
         LOGGER.warn("IMPORTS_DATE not found in {}", classname.toUpperCase(Locale.getDefault())); //$NON-NLS-1$
        }
@@ -448,17 +554,17 @@ public final class TR64ServiceClasses
        }
       if (!variableTypes.containsValue("dateTime")) //$NON-NLS-1$
        {
-        templ.setVar("IMPORTS_DATE"); //$NON-NLS-1$
+        templ.setVar(IMPORTS_DATE);
        }
-      templ.parse("IMPORTS_DATE_BLK", "IMPORTS_DATE", false); //$NON-NLS-1$ //$NON-NLS-2$
+      templ.parse("IMPORTS_DATE_BLK", IMPORTS_DATE, false); //$NON-NLS-1$
       templ.parse(classname.toUpperCase(Locale.getDefault()) + "final", classname.toUpperCase(Locale.getDefault())); //$NON-NLS-1$
-      final File dir = new File(this.outputPath + "/generated-sources/de/powerstat/fb/generated/tr64/"); //$NON-NLS-1$
+      final var dir = new File(this.outputPath + "/generated-sources/de/powerstat/fb/generated/tr64/"); //$NON-NLS-1$
       /* final boolean success = */ dir.mkdirs();
       if (LOGGER.isDebugEnabled())
        {
-        LOGGER.debug("Write3: {}{}{}.java", dir.getAbsolutePath(), File.separator, classname); //$NON-NLS-1$ //$NON-NLS-2$
+        LOGGER.debug("Write3: {}{}{}.java", dir.getAbsolutePath(), File.separator, classname); //$NON-NLS-1$
        }
-      try (PrintWriter out = new PrintWriter(dir.getAbsolutePath() + File.separator + TR64ServiceTemplates.convertUnderline2CamelCase(classname, true) + ".java", StandardCharsets.UTF_8)) //$NON-NLS-1$
+      try (var out = new PrintWriter(dir.getAbsolutePath() + File.separator + TR64ServiceTemplates.convertUnderline2CamelCase(classname, true) + ".java", StandardCharsets.UTF_8)) //$NON-NLS-1$
        {
         out.println(templ.get(classname.toUpperCase(Locale.getDefault()) + "final")); //$NON-NLS-1$
        }

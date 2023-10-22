@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2020 Dipl.-Inform. Kai Hofmann. All rights reserved!
+ * Copyright (C) 2015-2023 Dipl.-Inform. Kai Hofmann. All rights reserved!
  */
 package de.powerstat.fb;
 
@@ -58,13 +58,8 @@ public final class TR64Session extends TR64SessionMini
    * @param docBuilder DocumentBuilder
    * @param hostname FB hostname
    * @param port FB port number
-   * @throws KeyStoreException Key store exception
-   * @throws NoSuchAlgorithmException No such algorithm exception
-   * @throws KeyManagementException Key management exception
-   * @throws ParserConfigurationException Parser configuration exception
-   * @throws NullPointerException If hostname, username or password is null
    */
-  private TR64Session(final CloseableHttpClient httpclient, final DocumentBuilder docBuilder, final Hostname hostname, final Port port) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, ParserConfigurationException
+  private TR64Session(final CloseableHttpClient httpclient, final DocumentBuilder docBuilder, final Hostname hostname, final Port port)
    {
     super(httpclient, docBuilder, hostname, port);
    }
@@ -78,13 +73,8 @@ public final class TR64Session extends TR64SessionMini
    * @param hostname FB hostname
    * @param port FB port number
    * @return TR64SessionMini
-   * @throws KeyStoreException Key store exception
-   * @throws NoSuchAlgorithmException No such algorithm exception
-   * @throws KeyManagementException Key management exception
-   * @throws ParserConfigurationException Parser configuration exception
-   * @throws NullPointerException If hostname, username or password is null
    */
-  public static TR64Session newInstance(final CloseableHttpClient httpclient, final DocumentBuilder docBuilder, final Hostname hostname, final Port port) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException, ParserConfigurationException
+  public static TR64Session newInstance(final CloseableHttpClient httpclient, final DocumentBuilder docBuilder, final Hostname hostname, final Port port)
    {
     return new TR64Session(httpclient, docBuilder, hostname, port);
    }
@@ -110,10 +100,10 @@ public final class TR64Session extends TR64SessionMini
     credsProvider.setCredentials(new AuthScope(hostname.stringValue(), port.intValue()), new UsernamePasswordCredentials(username.stringValue(), password.stringValue()));
     final CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(new SSLConnectionSocketFactory(new SSLContextBuilder().loadTrustMaterial(null, new TrustSelfSignedStrategy()).build())).setDefaultCredentialsProvider(credsProvider).build();
 
-    final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    final var factory = DocumentBuilderFactory.newInstance();
     factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
     factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); //$NON-NLS-1$
-    final DocumentBuilder docBuilder = factory.newDocumentBuilder();
+    final var docBuilder = factory.newDocumentBuilder();
 
     return newInstance(httpclient, docBuilder, hostname, port);
    }

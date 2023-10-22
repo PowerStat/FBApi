@@ -1,5 +1,10 @@
 /*
- * Copyright (C) 2019-2020 Dipl.-Inform. Kai Hofmann. All rights reserved!
+ * Copyright (C) 2019-2023 Dipl.-Inform. Kai Hofmann. All rights reserved!
+ */
+
+
+/**
+ * Module descriptor.
  */
 module de.powerstat.fb.generated
  {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Dipl.-Inform. Kai Hofmann. All rights reserved!
+ * Copyright (C) 2020-2023 Dipl.-Inform. Kai Hofmann. All rights reserved!
  */
 package de.powerstat.fb.generator.impl;
 
@@ -22,8 +22,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import de.powerstat.fb.mini.TR64SessionMini;
+import de.powerstat.phplib.templateengine.HandleUndefined;
 import de.powerstat.phplib.templateengine.TemplateEngine;
-import de.powerstat.phplib.templateengine.TemplateEngine.HandleUndefined;
 
 
 /**
@@ -44,12 +44,12 @@ public final class TR64ServiceTemplates
   /**
    * TR64 session.
    */
-  private final transient TR64SessionMini session;
+  private final TR64SessionMini session;
 
   /**
    * Output path.
    */
-  private final transient String outputPath;
+  private final String outputPath;
 
 
   /**
@@ -77,7 +77,7 @@ public final class TR64ServiceTemplates
   public static String convertUnderline2CamelCase(final String name, final boolean firstUpper)
    {
     final String[] parts = name.split("_"); //$NON-NLS-1$
-    final StringBuilder result = new StringBuilder();
+    final var result = new StringBuilder();
     boolean first = true;
     for (final String part : parts)
      {
@@ -104,8 +104,8 @@ public final class TR64ServiceTemplates
    */
   public static String toSentence(final String methodName)
    {
-    final StringBuilder methodDesc = new StringBuilder();
-    for (final String word : METHODNAME_REGEXP.split(methodName)) //$NON-NLS-1$
+    final var methodDesc = new StringBuilder();
+    for (final String word : METHODNAME_REGEXP.split(methodName))
      {
       methodDesc.append((methodDesc.length() > 0) ? word.toLowerCase(Locale.getDefault()) : word);
       methodDesc.append(' ');
@@ -128,9 +128,9 @@ public final class TR64ServiceTemplates
    */
   public void generateServiceTemplate(final NodeList serviceNL, final int serviceNr) throws IOException, SAXException
    {
-    String classname = "dummy"; //$NON-NLS-1$
-    String scpdUrl = ""; //$NON-NLS-1$
-    final TemplateEngine templ = new TemplateEngine(HandleUndefined.KEEP);
+    var classname = "dummy"; //$NON-NLS-1$
+    var scpdUrl = ""; //$NON-NLS-1$
+    final var templ = new TemplateEngine(HandleUndefined.KEEP);
     templ.setFile("SCPD", new File("src/main/resources", "SCPD.tmpl")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     templ.subst("SCPD"); //$NON-NLS-1$
     final NodeList serviceChildsNL = serviceNL.item(serviceNr).getChildNodes();
@@ -153,17 +153,17 @@ public final class TR64ServiceTemplates
        }
      }
     templ.parse("SCPDfinal", "SCPD"); //$NON-NLS-1$ //$NON-NLS-2$
-    final File dir = new File(this.outputPath + "/generated-sources/fb/tmpl/"); //$NON-NLS-1$
+    final var dir = new File(this.outputPath + "/generated-sources/fb/tmpl/"); //$NON-NLS-1$
     /* final boolean success = */ dir.mkdirs();
     if (LOGGER.isDebugEnabled())
      {
-      LOGGER.debug("Write1: {}{}{}.tmpl", dir.getAbsolutePath(), File.separator, classname); //$NON-NLS-1$ //$NON-NLS-2$
+      LOGGER.debug("Write1: {}{}{}.tmpl", dir.getAbsolutePath(), File.separator, classname); //$NON-NLS-1$
      }
-    try (PrintWriter out = new PrintWriter(dir.getAbsolutePath() + File.separator + convertUnderline2CamelCase(classname, true) + ".tmpl", StandardCharsets.UTF_8)) //$NON-NLS-1$
+    try (var out = new PrintWriter(dir.getAbsolutePath() + File.separator + convertUnderline2CamelCase(classname, true) + ".tmpl", StandardCharsets.UTF_8)) //$NON-NLS-1$
      {
       out.println(templ.get("SCPDfinal")); //$NON-NLS-1$
      }
-    final TR64ServiceClasses classes = new TR64ServiceClasses(this.session, this.outputPath);
+    final var classes = new TR64ServiceClasses(this.session, this.outputPath);
     classes.generateServiceClass(scpdUrl, classname);
    }
 

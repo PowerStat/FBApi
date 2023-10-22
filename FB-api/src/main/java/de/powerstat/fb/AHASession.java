@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2021 Dipl.-Inform. Kai Hofmann. All rights reserved!
+ * Copyright (C) 2015-2023 Dipl.-Inform. Kai Hofmann. All rights reserved!
  */
 package de.powerstat.fb;
 
@@ -10,8 +10,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Pattern;
 
 import javax.xml.XMLConstants;
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -21,7 +19,7 @@ import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContextBuilder;
-import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 import de.powerstat.fb.generated.Devicelist;
 import de.powerstat.fb.mini.AHASessionMini;
@@ -31,6 +29,8 @@ import de.powerstat.validation.values.Port;
 import de.powerstat.validation.values.Username;
 import de.powerstat.validation.values.strategies.UsernameConfigurableStrategy;
 import de.powerstat.validation.values.strategies.UsernameConfigurableStrategy.HandleEMail;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
 
 
 /**
@@ -105,10 +105,10 @@ public final class AHASession extends AHASessionMini
    {
     final CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(new SSLConnectionSocketFactory(new SSLContextBuilder().loadTrustMaterial(null, new TrustSelfSignedStrategy()).build())).build();
 
-    final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    final var factory = DocumentBuilderFactory.newInstance();
     factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
     factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); //$NON-NLS-1$
-    final DocumentBuilder docBuilder = factory.newDocumentBuilder();
+    final var docBuilder = factory.newDocumentBuilder();
 
     return newInstance(httpclient, docBuilder, hostname, port, username, password);
    }
@@ -160,7 +160,7 @@ public final class AHASession extends AHASessionMini
    * @return Devicelist
    * @throws JAXBException JAXB exception
    */
-  public static Devicelist parseDeviceListInfos(final Document doc) throws JAXBException
+  public static Devicelist parseDeviceListInfos(final Node doc) throws JAXBException
    {
     return (Devicelist)JAXBContext.newInstance(Devicelist.class).createUnmarshaller().unmarshal(doc.getFirstChild());
    }

@@ -26,6 +26,13 @@ After this you could use the following dependency within your projects:
 
 Other build tools like gradle will work analogous.
 
+Java platform module system:
+
+    module com.example.java.app
+     {
+      requires de.powerstat.fb;
+     }
+
 To compile this project yourself you could use:
 
     mvn clean install org.pitest:pitest-maven:mutationCoverage site -Dfb.hostname=<fritz.box> -Dfb.port=49443 -Dfb.username=<admin> -Dfb.password=<TopSecret!>
@@ -70,7 +77,7 @@ To run toolchain:
     
 If you use a sonar server:
 
-    mvn sonar:sonar -Dsonar.login=<username> -Dsonar.password=<password>
+    mvn sonar:sonar -Dsonar.token=<token>
 
 If you use [infer][https://fbinfer.com/]:
 

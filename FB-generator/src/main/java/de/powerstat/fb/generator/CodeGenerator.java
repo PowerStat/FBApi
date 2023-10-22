@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2020 Dipl.-Inform. Kai Hofmann. All rights reserved!
+ * Copyright (C) 2015-2023 Dipl.-Inform. Kai Hofmann. All rights reserved!
  */
 package de.powerstat.fb.generator;
 
@@ -59,7 +59,7 @@ public final class CodeGenerator
     Objects.requireNonNull(args[2], "arg2"); //$NON-NLS-1$
     Objects.requireNonNull(args[3], "arg3"); //$NON-NLS-1$
     Objects.requireNonNull(args[4], "arg4"); //$NON-NLS-1$
-    new TR64Description(TR64SessionMini.newInstance(args[0], Integer.parseInt(args[1]), args[2], args[3]), args[4]).getTR64desc();
+    new TR64Description(TR64SessionMini.newInstance(args[0], Integer.parseInt(args[1]), args[2], args[3]), args[4]).fetchTR64desc();
    }
 
  }
