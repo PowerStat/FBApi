@@ -20,7 +20,7 @@
   <properties>
     <license.inceptionYear>2015</license.inceptionYear>
 
-      </properties>
+  </properties>
 
   <distributionManagement>
     <site>
@@ -124,12 +124,12 @@
   </reporting>
 
   <dependencyManagement>
-  <dependencies>
-    <dependency>
+    <dependencies>
+      <dependency>
         <groupId>jakarta.activation</groupId>
         <artifactId>jakarta.activation-api</artifactId>
         <version>2.1.2</version>
-    </dependency>
+      </dependency>
 
     </dependencies>
   </dependencyManagement>

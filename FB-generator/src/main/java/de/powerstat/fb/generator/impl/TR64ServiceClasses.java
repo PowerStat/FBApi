@@ -41,7 +41,7 @@ public final class TR64ServiceClasses
   private static final Logger LOGGER = LogManager.getLogger(TR64ServiceClasses.class);
 
   /**
-   *Type map.
+   * Type map.
    */
   private static final Map<String, String> TYPE_MAP = new ConcurrentHashMap<>();
 

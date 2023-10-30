@@ -20,7 +20,7 @@
   <properties>
     <license.inceptionYear>2015</license.inceptionYear>
 
-      </properties>
+  </properties>
 
   <distributionManagement>
     <site>
@@ -59,7 +59,7 @@
           <finalName>${project.artifactId}</finalName>
         </configuration>
       </plugin>
-      
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
@@ -144,9 +144,9 @@
     </dependency>
 
     <dependency>
-	    <groupId>xerces</groupId>
-	    <artifactId>xercesImpl</artifactId>
-	    <version>2.12.2</version>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
+      <version>2.12.2</version>
     </dependency>
 
   </dependencies>

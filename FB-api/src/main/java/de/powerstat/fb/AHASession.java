@@ -40,7 +40,7 @@ import jakarta.xml.bind.JAXBException;
  */
 public final class AHASession extends AHASessionMini
  {
-  /**
+  /* *
    * Logger.
    */
   // private static final Logger LOGGER = LogManager.getLogger(AHASession.class);

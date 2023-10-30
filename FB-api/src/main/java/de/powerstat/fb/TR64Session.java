@@ -40,7 +40,7 @@ import de.powerstat.validation.values.strategies.UsernameConfigurableStrategy.Ha
  */
 public final class TR64Session extends TR64SessionMini
  {
-  /**
+  /* *
    * Logger.
    */
   // private static final Logger LOGGER = LogManager.getLogger(TR64Session.class);
