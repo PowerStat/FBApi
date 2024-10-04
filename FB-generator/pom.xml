@@ -5,7 +5,7 @@
   <parent>
     <groupId>de.powerstat.toolbaseline</groupId>
     <artifactId>tbl-java-parent</artifactId>
-    <version>11.2.0</version>
+    <version>17.2.0</version>
   </parent>
 
   <groupId>de.powerstat.fb</groupId>
@@ -20,6 +20,11 @@
   <properties>
     <license.inceptionYear>2015</license.inceptionYear>
 
+    <fb.hostname>fritz.box</fb.hostname>
+    <fb.port>49443</fb.port>
+    <fb.username></fb.username>
+    <fb.password></fb.password>
+    <fb.outtype></fb.outtype>
   </properties>
 
   <distributionManagement>
@@ -44,7 +49,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.3.0</version>
+        <version>3.4.2</version>
         <configuration>
           <archive>
             <manifestEntries>
@@ -63,7 +68,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.5.0</version>
+        <version>3.6.0</version>
         <configuration>
           <!-- put your configurations here -->
         </configuration>
@@ -80,6 +85,7 @@
       <plugin> <!-- Not working: https://issues.apache.org/jira/browse/MJDEPS-25 -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jdeps-plugin</artifactId>
+        <version>3.1.2</version>
         <configuration>
           <module>de.powerstat.fb.generator</module>
           <multiRelease>11</multiRelease>
@@ -92,7 +98,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.4.1</version>
+        <version>3.5.0</version>
         <executions>
           <execution>
             <id>enforce</id>
@@ -105,6 +111,23 @@
         </executions>
         <configuration>
           <skip>true</skip>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>        
+          <mainClass>de.powerstat.fb.generator.CodeGenerator</mainClass>
+          <arguments>
+            <argument>${fb.hostname}</argument>
+            <argument>${fb.port}</argument>
+            <argument>${fb.username}</argument>
+            <argument>${fb.password}</argument>
+            <argument>${project.build.directory}</argument>
+            <argument>${fb.outtype}</argument>
+          </arguments>
         </configuration>
       </plugin>
 
@@ -128,7 +151,7 @@
     <dependency>
       <groupId>de.powerstat.phplib</groupId>
       <artifactId>templateengine</artifactId>
-      <version>2.0.0</version>
+      <version>2.1.0</version>
     </dependency>
 
     <dependency>
@@ -147,6 +170,18 @@
       <groupId>xerces</groupId>
       <artifactId>xercesImpl</artifactId>
       <version>2.12.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>xalan</groupId>
+      <artifactId>xalan</artifactId>
+      <version>2.7.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>xalan</groupId>
+      <artifactId>serializer</artifactId>
+      <version>2.7.3</version>
     </dependency>
 
   </dependencies>

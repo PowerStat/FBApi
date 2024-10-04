@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2023 Dipl.-Inform. Kai Hofmann. All rights reserved!
+ * Copyright (C) 2015-2024 Dipl.-Inform. Kai Hofmann. All rights reserved!
  */
 package de.powerstat.fb.generator;
 
@@ -40,7 +40,7 @@ public final class CodeGenerator
   /**
    * Main.
    *
-   * @param args 0: FB hostname; 1 : FB port; 2 : FB username; 3 : FB password; 4: ouput path for generated code
+   * @param args 0: FB hostname; 1 : FB port; 2 : FB username; 3 : FB password; 4: ouput path for generated code; [5: outtype: java|ansible]
    * @throws KeyManagementException Key management exception
    * @throws NumberFormatException Number format exception
    * @throws NoSuchAlgorithmException No such algorithm
@@ -59,7 +59,12 @@ public final class CodeGenerator
     Objects.requireNonNull(args[2], "arg2"); //$NON-NLS-1$
     Objects.requireNonNull(args[3], "arg3"); //$NON-NLS-1$
     Objects.requireNonNull(args[4], "arg4"); //$NON-NLS-1$
-    new TR64Description(TR64SessionMini.newInstance(args[0], Integer.parseInt(args[1]), args[2], args[3]), args[4]).fetchTR64desc();
+    String outType = "java"; //$NON-NLS-1$
+    if (args.length == 6)
+     {
+      outType = args[5];
+     }
+    new TR64Description(TR64SessionMini.newInstance(args[0], Integer.parseInt(args[1]), args[2], args[3]), args[4], outType).fetchTR64desc();
    }
 
  }

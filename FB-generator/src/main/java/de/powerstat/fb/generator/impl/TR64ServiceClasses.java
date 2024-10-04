@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020-2023 Dipl.-Inform. Kai Hofmann. All rights reserved!
+ * Copyright (C) 2020-2024 Dipl.-Inform. Kai Hofmann. All rights reserved!
  */
 package de.powerstat.fb.generator.impl;
 
@@ -160,6 +160,11 @@ public final class TR64ServiceClasses
    */
   private final String outputPath;
 
+  /**
+   * Output type.
+   */
+  private final String outType;
+
 
   /*
    * Static initialization.
@@ -182,13 +187,15 @@ public final class TR64ServiceClasses
    *
    * @param session TR64 session
    * @param outputPath Output path for generated code
+   * @param outType Output type: java|ansible
    */
-  public TR64ServiceClasses(final TR64SessionMini session, final String outputPath)
+  public TR64ServiceClasses(final TR64SessionMini session, final String outputPath, final String outType)
    {
     Objects.requireNonNull(session, "session"); //$NON-NLS-1$
     Objects.requireNonNull(outputPath, "outputPath"); //$NON-NLS-1$
     this.session = session;
     this.outputPath = outputPath;
+    this.outType = outType;
    }
 
 
@@ -471,7 +478,7 @@ public final class TR64ServiceClasses
              }
            }
          }
-        final var dataClass = new TR64DataClasses(this.outputPath);
+        final var dataClass = new TR64DataClasses(this.outputPath, this.outType);
         allArgsOutIntern = dataClass.generateDataClass(classname, variableTypes, templ, allArgsOutIntern, methodName, arguments, argDirections, argRelated, argsOut);
        } // argumentList
      }
@@ -531,10 +538,10 @@ public final class TR64ServiceClasses
      {
       templ.subst(classname.toUpperCase(Locale.getDefault()));
 
-      templ.setFile(METHOD, new File("src/main/resources", "method.tmpl")); //$NON-NLS-1$ //$NON-NLS-2$
+      templ.setFile(METHOD, new File("src/main/resources", "method_" + this.outType + ".tmpl")); //$NON-NLS-1$ //$NON-NLS-2$
       templ.subst(METHOD);
 
-      templ.setFile("DATACLASS", new File("src/main/resources", "dataClass.tmpl")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+      templ.setFile("DATACLASS", new File("src/main/resources", "dataClass_" + this.outType + ".tmpl")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
       templ.subst("DATACLASS"); //$NON-NLS-1$
 
       if (!templ.setBlock(classname.toUpperCase(Locale.getDefault()), METHODS, "METHODS_BLK") && LOGGER.isWarnEnabled()) //$NON-NLS-1$
@@ -564,7 +571,7 @@ public final class TR64ServiceClasses
        {
         LOGGER.debug("Write3: {}{}{}.java", dir.getAbsolutePath(), File.separator, classname); //$NON-NLS-1$
        }
-      try (var out = new PrintWriter(dir.getAbsolutePath() + File.separator + TR64ServiceTemplates.convertUnderline2CamelCase(classname, true) + ".java", StandardCharsets.UTF_8)) //$NON-NLS-1$
+      try (var out = new PrintWriter(dir.getAbsolutePath() + File.separator + TR64ServiceTemplates.convertUnderline2CamelCase(classname, true) + ("java".equals(this.outType) ? ".java" : ".yml"), StandardCharsets.UTF_8)) //$NON-NLS-1$
        {
         out.println(templ.get(classname.toUpperCase(Locale.getDefault()) + "final")); //$NON-NLS-1$
        }

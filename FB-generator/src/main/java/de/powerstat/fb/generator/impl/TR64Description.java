@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2023 Dipl.-Inform. Kai Hofmann. All rights reserved!
+ * Copyright (C) 2015-2024 Dipl.-Inform. Kai Hofmann. All rights reserved!
  */
 package de.powerstat.fb.generator.impl;
 
@@ -45,19 +45,26 @@ public final class TR64Description
    */
   private final String outputPath;
 
+  /**
+   * Output type.
+   */
+  private final String outType;
+
 
   /**
    * Constructor.
    *
    * @param session TR64 session
    * @param outputPath Output path for generated code
+   * @param outType Output type: java|ansible
    */
-  public TR64Description(final TR64SessionMini session, final String outputPath)
+  public TR64Description(final TR64SessionMini session, final String outputPath, final String outType)
    {
     Objects.requireNonNull(session, "session"); //$NON-NLS-1$
     Objects.requireNonNull(outputPath, "outputPath"); //$NON-NLS-1$
     this.session = session;
     this.outputPath = outputPath;
+    this.outType = outType;
    }
 
 
@@ -72,8 +79,8 @@ public final class TR64Description
     try
      {
       final TransformerFactory factory = TransformerFactory.newInstance();
-      factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "all"); //$NON-NLS-1$
-      factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "all"); //$NON-NLS-1$
+      // factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "all"); //$NON-NLS-1$
+      // factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "all"); //$NON-NLS-1$
       factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
       final Transformer transformer = factory.newTransformer();
       transformer.setOutputProperty(OutputKeys.INDENT, "yes"); //$NON-NLS-1$
@@ -106,7 +113,7 @@ public final class TR64Description
      }
     // TODO /root/systemVersion/Minor   /root/systemVersion/Patch     7.12
     final NodeList serviceNL = tr64desc.getElementsByTagName("service"); //$NON-NLS-1$
-    final var services = new TR64ServiceTemplates(this.session, this.outputPath);
+    final var services = new TR64ServiceTemplates(this.session, this.outputPath, this.outType);
     for (int service = 0; service < serviceNL.getLength(); ++service)
      {
       services.generateServiceTemplate(serviceNL, service);

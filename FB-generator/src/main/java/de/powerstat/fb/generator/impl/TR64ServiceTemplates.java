@@ -51,19 +51,26 @@ public final class TR64ServiceTemplates
    */
   private final String outputPath;
 
+  /**
+   * Output type.
+   */
+  private final String outType;
+
 
   /**
    * Constructor.
    *
    * @param session TR64 session
    * @param outputPath Output path for generated code
+   * @param outType Output type: java|ansible
    */
-  public TR64ServiceTemplates(final TR64SessionMini session, final String outputPath)
+  public TR64ServiceTemplates(final TR64SessionMini session, final String outputPath, final String outType)
    {
     Objects.requireNonNull(session, "session"); //$NON-NLS-1$
     Objects.requireNonNull(outputPath, "outputPath"); //$NON-NLS-1$
     this.session = session;
     this.outputPath = outputPath;
+    this.outType = outType;
    }
 
 
@@ -131,7 +138,7 @@ public final class TR64ServiceTemplates
     var classname = "dummy"; //$NON-NLS-1$
     var scpdUrl = ""; //$NON-NLS-1$
     final var templ = new TemplateEngine(HandleUndefined.KEEP);
-    templ.setFile("SCPD", new File("src/main/resources", "SCPD.tmpl")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    templ.setFile("SCPD", new File("src/main/resources", "SCPD_" + this.outType + ".tmpl")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$  //$NON-NLS-4$
     templ.subst("SCPD"); //$NON-NLS-1$
     final NodeList serviceChildsNL = serviceNL.item(serviceNr).getChildNodes();
     for (int j = 0; j < serviceChildsNL.getLength(); ++j)
@@ -163,7 +170,7 @@ public final class TR64ServiceTemplates
      {
       out.println(templ.get("SCPDfinal")); //$NON-NLS-1$
      }
-    final var classes = new TR64ServiceClasses(this.session, this.outputPath);
+    final var classes = new TR64ServiceClasses(this.session, this.outputPath, this.outType);
     classes.generateServiceClass(scpdUrl, classname);
    }
 

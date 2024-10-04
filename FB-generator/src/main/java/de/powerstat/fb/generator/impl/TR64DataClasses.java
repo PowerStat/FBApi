@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020-2023 Dipl.-Inform. Kai Hofmann. All rights reserved!
+ * Copyright (C) 2020-2024 Dipl.-Inform. Kai Hofmann. All rights reserved!
  */
 package de.powerstat.fb.generator.impl;
 
@@ -85,16 +85,23 @@ public class TR64DataClasses
    */
   private final String outputPath;
 
+  /**
+   * Output type.
+   */
+  private final String outType;
+
 
   /**
    * Constructor.
    *
    * @param outputPath Output path for generated code
+   * @param outType Output type: java|ansible
    */
-  public TR64DataClasses(final String outputPath)
+  public TR64DataClasses(final String outputPath, final String outType)
    {
     Objects.requireNonNull(outputPath, "outputPath"); //$NON-NLS-1$
     this.outputPath = outputPath;
+    this.outType = outType;
    }
 
 
@@ -228,7 +235,7 @@ public class TR64DataClasses
        {
         LOGGER.debug("Write2: {}{}{}.java", dir.getAbsolutePath(), File.separator, clName); //$NON-NLS-1$
        }
-      try (var out = new PrintWriter(dir.getAbsolutePath() + File.separator + TR64ServiceTemplates.convertUnderline2CamelCase(clName, true) + ".java", StandardCharsets.UTF_8)) //$NON-NLS-1$
+      try (var out = new PrintWriter(dir.getAbsolutePath() + File.separator + TR64ServiceTemplates.convertUnderline2CamelCase(clName, true) + ("java".equals(this.outType) ? ".java" : ".yml"), StandardCharsets.UTF_8)) //$NON-NLS-1$
        {
         out.println(templ.get(clName.toUpperCase(Locale.getDefault()) + "final")); //$NON-NLS-1$
        }
