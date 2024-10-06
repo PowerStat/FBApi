@@ -4,6 +4,7 @@
 package de.powerstat.fb;
 
 
+import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -101,11 +102,25 @@ public final class TR64Session extends TR64SessionMini
     final CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(new SSLConnectionSocketFactory(new SSLContextBuilder().loadTrustMaterial(null, new TrustSelfSignedStrategy()).build())).setDefaultCredentialsProvider(credsProvider).build();
 
     final var factory = DocumentBuilderFactory.newInstance();
-    factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-    factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); //$NON-NLS-1$
-    final var docBuilder = factory.newDocumentBuilder();
-
-    return newInstance(httpclient, docBuilder, hostname, port);
+    try
+     {
+      factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+      factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); //$NON-NLS-1$
+      final var docBuilder = factory.newDocumentBuilder();
+      return newInstance(httpclient, docBuilder, hostname, port);
+     }
+    catch (ParserConfigurationException e)
+     {
+      try
+       {
+        httpclient.close();
+       }
+      catch (IOException e1)
+       {
+        // ignore
+       }
+      throw e;
+     }
    }
 
 
