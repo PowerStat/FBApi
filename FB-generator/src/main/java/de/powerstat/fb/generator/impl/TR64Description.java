@@ -88,7 +88,11 @@ public final class TR64Description
       transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no"); //$NON-NLS-1$
       transformer.setOutputProperty(OutputKeys.METHOD, "xml"); //$NON-NLS-1$
       final var file = new File(filename);
-      /* final boolean success = */ file.getParentFile().mkdirs();
+      final var parent = file.getParentFile();
+      if (parent != null)
+       {
+        /* final boolean success = */ parent.mkdirs();
+       }
       transformer.transform(new DOMSource(document), new StreamResult(file));
      }
     catch (final TransformerException e)

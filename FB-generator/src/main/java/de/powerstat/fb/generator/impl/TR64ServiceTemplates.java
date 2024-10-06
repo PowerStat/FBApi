@@ -132,6 +132,7 @@ public final class TR64ServiceTemplates
    * @throws ClientProtocolException Client protocol exception
    * @throws UnsupportedEncodingException Unsupported encoding
    * @throws SAXException SAX exception
+   * @throws SecurityException Indicate a security violation
    */
   public void generateServiceTemplate(final NodeList serviceNL, final int serviceNr) throws IOException, SAXException
    {
