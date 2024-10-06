@@ -6,3 +6,5 @@ FB-api/dependency-reduced-pom.xml
 target/
 FB-generator/dependency-reduced-pom.xml
 cov-int/
+coverity.bat
+cov-int.zip
