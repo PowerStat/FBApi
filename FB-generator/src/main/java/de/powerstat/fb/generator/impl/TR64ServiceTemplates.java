@@ -22,6 +22,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import de.powerstat.fb.mini.TR64SessionMini;
+import de.powerstat.fb.mini.URIPath;
 import de.powerstat.phplib.templateengine.HandleUndefined;
 import de.powerstat.phplib.templateengine.TemplateEngine;
 
@@ -137,7 +138,7 @@ public final class TR64ServiceTemplates
   public void generateServiceTemplate(final NodeList serviceNL, final int serviceNr) throws IOException, SAXException
    {
     var classname = "dummy"; //$NON-NLS-1$
-    var scpdUrl = ""; //$NON-NLS-1$
+    URIPath scpdUrl = URIPath.of("/"); //$NON-NLS-1$
     final var templ = new TemplateEngine(HandleUndefined.KEEP);
     templ.setFile("SCPD", new File("src/main/resources", "SCPD_" + this.outType + ".tmpl")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$  //$NON-NLS-4$
     templ.subst("SCPD"); //$NON-NLS-1$
@@ -153,7 +154,7 @@ public final class TR64ServiceTemplates
         templ.setVar(serviceChildName, serviceChildValue);
         if ("SCPDURL".equals(serviceChildName)) //$NON-NLS-1$
          {
-          scpdUrl = serviceChildValue;
+          scpdUrl = URIPath.of(serviceChildValue);
           classname = serviceChildValue.substring(1, 2).toUpperCase(Locale.getDefault()) + serviceChildValue.substring(2, serviceChildValue.length() - 8); // "SCPD.xml"
           templ.setVar("CLASSNAME", convertUnderline2CamelCase(classname, true)); //$NON-NLS-1$
           templ.setVar("CLASSDESC", toSentence(convertUnderline2CamelCase(classname, true))); //$NON-NLS-1$

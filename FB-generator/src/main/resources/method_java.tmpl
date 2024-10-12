@@ -16,6 +16,6 @@
    {
     final Map<String, String> parameters = new HashMap<>();<!-- BEGIN PARAMS -->
     parameters.put("{PARAMNAME}", {JPARAMNAMEVAL}); //\\\$NON-NLS-1\\\$<!-- END PARAMS -->
-    <!-- BEGIN RESULT -->final Document doc = <!-- END RESULT -->this.tr64.doSOAPRequest(CONTROL_URL, SERVICE_TYPE, "{METHODNAME}", parameters); //\$NON-NLS-1\$<!-- BEGIN RETURN -->
+    <!-- BEGIN RESULT -->final Document doc = <!-- END RESULT -->this.tr64.doSOAPRequest(URIPath.of(CONTROL_URL), ServiceType.of(SERVICE_TYPE), Action.of("{METHODNAME}"), parameters); //\$NON-NLS-1\$<!-- BEGIN RETURN -->
     return {RETCONVB}<!-- BEGIN RETFIELDS -->{RETPARCONVB}doc.getElementsByTagName("{RETURNPARAMNAME}").item(0).getTextContent(){RETPARCONVE}{RTCOMMA}<!-- END RETFIELDS -->{RETCONVE};<!-- BEGIN RETNLS --> //\\\\\\\$NON-NLS-{RETNLSNR}\\\\\\\$<!-- END RETNLS --><!-- END RETURN -->
    }

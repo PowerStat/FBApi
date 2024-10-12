@@ -23,6 +23,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import de.powerstat.fb.mini.TR64SessionMini;
+import de.powerstat.fb.mini.URIPath;
 
 
 /**
@@ -110,7 +111,8 @@ public final class TR64Description
    */
   public void fetchTR64desc() throws IOException, SAXException
    {
-    final Document tr64desc = this.session.getDoc("/tr64desc.xml"); //$NON-NLS-1$
+    final URIPath urlPath = URIPath.of("/tr64desc.xml");
+    final Document tr64desc = this.session.getDoc(urlPath);
     if (LOGGER.isDebugEnabled())
      {
       writeXml2File(tr64desc, this.outputPath + "/tr64desc.xml"); //$NON-NLS-1$

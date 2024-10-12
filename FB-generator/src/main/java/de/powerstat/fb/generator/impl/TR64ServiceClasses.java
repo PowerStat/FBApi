@@ -26,6 +26,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import de.powerstat.fb.mini.TR64SessionMini;
+import de.powerstat.fb.mini.URIPath;
 import de.powerstat.phplib.templateengine.HandleUndefined;
 import de.powerstat.phplib.templateengine.TemplateEngine;
 
@@ -410,7 +411,7 @@ public final class TR64ServiceClasses
    * @throws IOException IO exception
    * @throws FileNotFoundException File not found
    */
-  private int generateServiceAction(final String scpdUrl, final String classname, final Map<String, String> variableTypes, final TemplateEngine templ, final NodeList actionNL, final int allArgsOut, final int i) throws IOException
+  private int generateServiceAction(final URIPath scpdUrl, final String classname, final Map<String, String> variableTypes, final TemplateEngine templ, final NodeList actionNL, final int allArgsOut, final int i) throws IOException
    {
     var methodName = ""; //$NON-NLS-1$
     final List<String> arguments = new ArrayList<>();
@@ -451,7 +452,7 @@ public final class TR64ServiceClasses
                    {
                     if (LOGGER.isWarnEnabled())
                      {
-                      LOGGER.warn("Argument already exist: " + scpdUrl + " / " + methodName + " / " + arg.getTextContent()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                      LOGGER.warn("Argument already exist: " + scpdUrl.stringValue() + " / " + methodName + " / " + arg.getTextContent()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                      }
                     break;
                    }
@@ -520,13 +521,13 @@ public final class TR64ServiceClasses
    * @throws ClientProtocolException Client protocol exception
    */
   @SuppressWarnings("IllegalCatch")
-  public void generateServiceClass(final String scpdUrl, final String classname) throws IOException, SAXException
+  public void generateServiceClass(final URIPath scpdUrl, final String classname) throws IOException, SAXException
    {
-    // LOGGER.info("scpdUrl=" + scpdUrl + " ------------------------------");
+    // LOGGER.info("scpdUrl=" + scpdUrl.stringValue() + " ------------------------------");
     final Document scpd = this.session.getDoc(scpdUrl);
     if (LOGGER.isDebugEnabled())
      {
-      TR64Description.writeXml2File(scpd, this.outputPath + scpdUrl.substring(scpdUrl.lastIndexOf('/')));
+      TR64Description.writeXml2File(scpd, this.outputPath + scpdUrl.stringValue().substring(scpdUrl.stringValue().lastIndexOf('/')));
      }
     final NodeList variablesNL = scpd.getElementsByTagName("stateVariable"); //$NON-NLS-1$
     final Map<String, String> variableTypes = new ConcurrentHashMap<>();
