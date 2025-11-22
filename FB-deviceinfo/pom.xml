@@ -5,7 +5,7 @@
   <parent>
     <groupId>de.powerstat.toolbaseline</groupId>
     <artifactId>tbl-java-parent</artifactId>
-    <version>17.2.0</version>
+    <version>17.3.0-SNAPSHOT</version>
   </parent>
 
   <groupId>de.powerstat.fb</groupId>
@@ -40,6 +40,7 @@
   </repositories>
 
   <build>
+    <finalName>${project.artifactId}</finalName>
     <plugins>
 
       <plugin>
@@ -83,7 +84,6 @@
             </manifestEntries>
             <addMavenDescriptor>false</addMavenDescriptor>
           </archive>
-          <finalName>${project.artifactId}</finalName>
         </configuration>
       </plugin>
 
@@ -99,7 +99,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.6.0</version>
+        <version>3.6.1</version>
         <executions>
           <execution>
             <id>add-source</id>
@@ -119,7 +119,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jaxb2-maven-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.3.0</version>
         <executions>
           <execution>
             <id>xjc</id>
@@ -158,6 +158,14 @@
           </dependency>
           
         </dependencies>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <excludePackageNames>de.powerstat.fb.generated</excludePackageNames>
+        </configuration>
       </plugin>
 
       <!-- TODO pandoc -> epub, markdown, odt, ... -->
