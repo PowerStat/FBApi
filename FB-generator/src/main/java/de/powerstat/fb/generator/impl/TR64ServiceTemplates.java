@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2020-2023 Dipl.-Inform. Kai Hofmann. All rights reserved!
+ * Copyright (C) 2020-2025 Dipl.-Inform. Kai Hofmann. All rights reserved!
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements; and to You under the Apache License, Version 2.0.
  */
 package de.powerstat.fb.generator.impl;
 
@@ -115,7 +116,7 @@ public final class TR64ServiceTemplates
     final var methodDesc = new StringBuilder();
     for (final String word : METHODNAME_REGEXP.split(methodName))
      {
-      methodDesc.append((methodDesc.length() > 0) ? word.toLowerCase(Locale.getDefault()) : word);
+      methodDesc.append(methodDesc.isEmpty() ? word : word.toLowerCase(Locale.getDefault()));
       methodDesc.append(' ');
      }
     methodDesc.deleteCharAt(methodDesc.length() - 1);

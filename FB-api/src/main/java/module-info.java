@@ -20,5 +20,7 @@ module de.powerstat.fb
   requires de.powerstat.validation;
   requires org.apache.httpcomponents.httpcore;
   requires org.apache.httpcomponents.httpclient;
+  requires org.checkerframework.checker.qual;
+  requires org.jmolecules.ddd;
 
  }

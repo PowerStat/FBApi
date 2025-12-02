@@ -15,5 +15,7 @@ module de.powerstat.fb.generated.tr64
   requires org.apache.httpcomponents.httpclient;
   requires org.apache.httpcomponents.httpcore;
   requires de.powerstat.fb.mini;
+  requires org.checkerframework.checker.qual;
+  requires org.jmolecules.ddd;
 
  }

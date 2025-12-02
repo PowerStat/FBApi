@@ -12,5 +12,7 @@ module de.powerstat.fb.generated
   exports de.powerstat.fb.generated;
 
   requires jakarta.xml.bind;
+  requires org.checkerframework.checker.qual;
+  requires org.jmolecules.ddd;
 
  }
