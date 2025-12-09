@@ -21,6 +21,7 @@ import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContextBuilder;
+import org.jmolecules.ddd.annotation.Service;
 import org.w3c.dom.Node;
 
 import de.powerstat.fb.generated.Devicelist;
@@ -40,6 +41,8 @@ import jakarta.xml.bind.JAXBException;
  *
  * @author Kai Hofmann
  */
+@Service
+//@InfrastructureLayer
 public final class AHASession extends AHASessionMini
  {
   /* *

@@ -25,6 +25,7 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContextBuilder;
+import org.jmolecules.ddd.annotation.Service;
 
 import de.powerstat.fb.mini.TR64SessionMini;
 import de.powerstat.validation.values.Hostname;
@@ -40,6 +41,8 @@ import de.powerstat.validation.values.strategies.UsernameConfigurableStrategy.Ha
  *
  * @author Kai Hofmann
  */
+@Service
+//@InfrastructureLayer
 public final class TR64Session extends TR64SessionMini
  {
   /* *

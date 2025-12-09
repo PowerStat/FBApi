@@ -285,7 +285,7 @@
 
     <dependency>
       <groupId>de.powerstat.fb</groupId>
-      <artifactId>miniapi</artifactId>
+      <artifactId>fbminiapi</artifactId>
       <version>1.0.0-SNAPSHOT</version>
     </dependency>
 
