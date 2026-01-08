@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2025 Dipl.-Inform. Kai Hofmann. All rights reserved!
+ * Copyright (C) 2019-2026 Dipl.-Inform. Kai Hofmann. All rights reserved!
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements; and to You under the Apache License, Version 2.0.
  */
 
@@ -17,7 +17,7 @@ module de.powerstat.fb
   requires de.powerstat.fb.mini;
   requires transitive de.powerstat.fb.generated;
   requires de.powerstat.fb.generated.tr64;
-  requires de.powerstat.validation;
+  requires de.powerstat.ddd;
   requires org.apache.httpcomponents.httpcore;
   requires org.apache.httpcomponents.httpclient;
   requires org.checkerframework.checker.qual;

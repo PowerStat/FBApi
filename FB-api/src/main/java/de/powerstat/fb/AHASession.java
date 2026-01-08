@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2025 Dipl.-Inform. Kai Hofmann. All rights reserved!
+ * Copyright (C) 2015-2026 Dipl.-Inform. Kai Hofmann. All rights reserved!
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements; and to You under the Apache License, Version 2.0.
  */
 package de.powerstat.fb;
@@ -26,12 +26,12 @@ import org.w3c.dom.Node;
 
 import de.powerstat.fb.generated.Devicelist;
 import de.powerstat.fb.mini.AHASessionMini;
-import de.powerstat.validation.values.Hostname;
-import de.powerstat.validation.values.Password;
-import de.powerstat.validation.values.Port;
-import de.powerstat.validation.values.Username;
-import de.powerstat.validation.values.strategies.UsernameConfigurableStrategy;
-import de.powerstat.validation.values.strategies.UsernameConfigurableStrategy.HandleEMail;
+import de.powerstat.ddd.values.comm.Hostname;
+import de.powerstat.ddd.values.comm.Password;
+import de.powerstat.ddd.values.comm.Port;
+import de.powerstat.ddd.values.comm.Username;
+import de.powerstat.ddd.values.strategies.UsernameConfigurableStrategy;
+import de.powerstat.ddd.values.strategies.UsernameConfigurableStrategy.HandleEMail;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 

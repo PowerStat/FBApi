@@ -11,7 +11,7 @@
 
   <groupId>de.powerstat.fb</groupId>
   <artifactId>fbapi</artifactId>
-  <version>7.29.0-SNAPSHOT</version>
+  <version>8.03.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>fb api</name>
@@ -137,15 +137,15 @@
 
   <dependencies>
     <dependency>
-      <groupId>de.powerstat.validation</groupId>
-      <artifactId>validation</artifactId>
-      <version>3.2.0-SNAPSHOT</version>
+      <groupId>de.powerstat.ddd</groupId>
+      <artifactId>valueobjectslib</artifactId>
+      <version>4.0.0-SNAPSHOT</version>
     </dependency>
 
     <dependency>
       <groupId>de.powerstat.fb</groupId>
       <artifactId>fbminiapi</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>2.0.0-SNAPSHOT</version>
     </dependency>
 
     <dependency>
@@ -157,7 +157,7 @@
     <dependency>
       <groupId>de.powerstat.fb</groupId>
       <artifactId>gentr64</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>2.0.0-SNAPSHOT</version>
     </dependency>
 
     <dependency>

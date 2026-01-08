@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2025 Dipl.-Inform. Kai Hofmann. All rights reserved!
+ * Copyright (C) 2015-2026 Dipl.-Inform. Kai Hofmann. All rights reserved!
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements; and to You under the Apache License, Version 2.0.
  */
 package de.powerstat.fb;
@@ -28,12 +28,12 @@ import org.apache.http.ssl.SSLContextBuilder;
 import org.jmolecules.ddd.annotation.Service;
 
 import de.powerstat.fb.mini.TR64SessionMini;
-import de.powerstat.validation.values.Hostname;
-import de.powerstat.validation.values.Password;
-import de.powerstat.validation.values.Port;
-import de.powerstat.validation.values.Username;
-import de.powerstat.validation.values.strategies.UsernameConfigurableStrategy;
-import de.powerstat.validation.values.strategies.UsernameConfigurableStrategy.HandleEMail;
+import de.powerstat.ddd.values.comm.Hostname;
+import de.powerstat.ddd.values.comm.Password;
+import de.powerstat.ddd.values.comm.Port;
+import de.powerstat.ddd.values.comm.Username;
+import de.powerstat.ddd.values.strategies.UsernameConfigurableStrategy;
+import de.powerstat.ddd.values.strategies.UsernameConfigurableStrategy.HandleEMail;
 
 
 /**
@@ -102,7 +102,7 @@ public final class TR64Session extends TR64SessionMini
   public static TR64Session newInstance(final Hostname hostname, final Port port, final Username username, final Password password) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException, ParserConfigurationException
    {
     final CredentialsProvider credsProvider = new BasicCredentialsProvider();
-    credsProvider.setCredentials(new AuthScope(hostname.stringValue(), port.intValue()), new UsernamePasswordCredentials(username.stringValue(), password.stringValue()));
+    credsProvider.setCredentials(new AuthScope(hostname.stringValue(), port.port()), new UsernamePasswordCredentials(username.stringValue(), password.stringValue()));
     final CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(new SSLConnectionSocketFactory(new SSLContextBuilder().loadTrustMaterial(null, new TrustSelfSignedStrategy()).build())).setDefaultCredentialsProvider(credsProvider).build();
 
     final var factory = DocumentBuilderFactory.newInstance();
